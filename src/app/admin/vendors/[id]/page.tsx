@@ -46,9 +46,9 @@ const getVendor = (id: string): Vendor => {
 // For Next.js App Router
 export default function VendorDetailPage({
   params,
-}: {
+}: Readonly<{
   params: { id: string }
-}) {
+}>) {
   const vendor = getVendor(params.id);
 
   return (
