@@ -43,12 +43,12 @@ const getVendor = (id: string): Vendor => {
   }
 }
 
-interface VendorDetailPageProps {
-  params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export default function VendorDetailPage({ params }: VendorDetailPageProps) {
+// For Next.js App Router
+export default function VendorDetailPage({
+  params,
+}: {
+  params: { id: string }
+}) {
   const vendor = getVendor(params.id);
 
   return (
