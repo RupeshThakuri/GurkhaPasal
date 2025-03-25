@@ -1,7 +1,7 @@
-import { DashboardHeader } from "@/components/admin/Dashboard/dashboard-header"
-import { DashboardShell } from "@/components/admin/Dashboard/dashboard-shell"
-import { VendorDetail } from "@/components/admin/Vendors/vendors-details"
-import { notFound } from "next/navigation"
+import { DashboardHeader } from "@/components/admin/Dashboard/dashboard-header";
+import { DashboardShell } from "@/components/admin/Dashboard/dashboard-shell";
+import { VendorDetail } from "@/components/admin/Vendors/vendors-details";
+import { notFound } from "next/navigation";
 
 interface Vendor {
   id: string;
@@ -22,7 +22,8 @@ interface Vendor {
   description: string;
 }
 
-const getVendor = (id: string): Vendor | null => {
+// Dummy function to simulate fetching a vendor
+const getVendor = async (id: string): Promise<Vendor | null> => {
   const vendors: Vendor[] = [
     {
       id: "1",
@@ -42,9 +43,8 @@ const getVendor = (id: string): Vendor | null => {
       website: "https://techinnovations.example.com",
       description:
         "Tech Innovations Inc. is a leading supplier of electronic components and accessories...",
-    }
+    },
   ];
-
   return vendors.find((vendor) => vendor.id === id) || null;
 };
 
@@ -52,10 +52,11 @@ interface VendorDetailPageProps {
   params: { id: string };
 }
 
-export default function VendorDetailPage({ params }: VendorDetailPageProps) {
+// ✅ Use `async` to match Next.js dynamic route expectations
+export default async function VendorDetailPage({ params }: VendorDetailPageProps) {
   if (!params?.id) return notFound();
 
-  const vendor = getVendor(params.id);
+  const vendor = await getVendor(params.id); // Ensure it's async
   if (!vendor) return notFound();
 
   return (
