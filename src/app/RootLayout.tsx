@@ -47,7 +47,9 @@ export default function RootLayout({
                       height={50}
                       alt="logo"
                     />
-                    <span className="font-bold text-orange-400">Prime Gurkha</span>
+                    <p>
+                      <span className="font-bold text-red-400">Prime</span><span className="font-bold text-blue-800">Gurkha</span>
+                    </p>
                   </Link>
                 </div>
                 <div className="px-3 py-4 h-[calc(100vh-4rem-40px)] overflow-auto">
