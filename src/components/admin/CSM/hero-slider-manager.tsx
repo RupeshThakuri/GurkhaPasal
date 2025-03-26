@@ -1,7 +1,5 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useRef } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -36,13 +34,10 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-// With this custom toast implementation:
 const useToast = () => {
   const showToast = (toast: { title: string; description: string; variant?: string }) => {
-    // In a real app, this would show a toast notification
     console.log(`Toast: ${toast.title} - ${toast.description}`)
   }
-
   return { toast: showToast }
 }
 
@@ -124,7 +119,7 @@ export function HeroSliderManager() {
     form.reset({
       title: "",
       description: "",
-      imageUrl: "/placeholder.svg?height=400&width=1200", // Default placeholder
+      imageUrl: "/placeholder.svg?height=400&width=1200",
       linkUrl: "",
       isActive: true,
     })
@@ -160,25 +155,26 @@ export function HeroSliderManager() {
   }
 
   const toggleImageStatus = (id: string) => {
-    setSliderImages(sliderImages.map((image) => (image.id === id ? { ...image, isActive: !image.isActive } : image)))
+    setSliderImages(sliderImages.map((image) => 
+      image.id === id ? { ...image, isActive: !image.isActive } : image
+    ))
   }
 
   const moveImageUp = (id: string) => {
     const imageIndex = sliderImages.findIndex((img) => img.id === id)
-    if (imageIndex <= 0) return // Already at the top
+    if (imageIndex <= 0) return
 
     const newImages = [...sliderImages]
-
-    // Update order properties
-    const currentOrder = newImages[imageIndex].order
+    // Swap the orders
+    const tempOrder = newImages[imageIndex].order
     newImages[imageIndex].order = newImages[imageIndex - 1].order
-    newImages[imageIndex - 1].order = currentOrder[
-      // Swap positions in array
-      (newImages[imageIndex - 1], newImages[imageIndex])
-    ] = [newImages[imageIndex], newImages[imageIndex - 1]]
+    newImages[imageIndex - 1].order = tempOrder
+    // Swap the positions
+    const temp = newImages[imageIndex]
+    newImages[imageIndex] = newImages[imageIndex - 1]
+    newImages[imageIndex - 1] = temp
 
     setSliderImages(newImages)
-
     toast({
       title: "Image moved up",
       description: `"${newImages[imageIndex - 1].title}" has been moved up in the order.`,
@@ -187,20 +183,19 @@ export function HeroSliderManager() {
 
   const moveImageDown = (id: string) => {
     const imageIndex = sliderImages.findIndex((img) => img.id === id)
-    if (imageIndex >= sliderImages.length - 1) return // Already at the bottom
+    if (imageIndex >= sliderImages.length - 1) return
 
     const newImages = [...sliderImages]
-
-    // Update order properties
-    const currentOrder = newImages[imageIndex].order
+    // Swap the orders
+    const tempOrder = newImages[imageIndex].order
     newImages[imageIndex].order = newImages[imageIndex + 1].order
-    newImages[imageIndex + 1].order = currentOrder[
-      // Swap positions in array
-      (newImages[imageIndex + 1], newImages[imageIndex])
-    ] = [newImages[imageIndex], newImages[imageIndex + 1]]
+    newImages[imageIndex + 1].order = tempOrder
+    // Swap the positions
+    const temp = newImages[imageIndex]
+    newImages[imageIndex] = newImages[imageIndex + 1]
+    newImages[imageIndex + 1] = temp
 
     setSliderImages(newImages)
-
     toast({
       title: "Image moved down",
       description: `"${newImages[imageIndex + 1].title}" has been moved down in the order.`,
@@ -209,23 +204,16 @@ export function HeroSliderManager() {
 
   const onSubmit = (values: FormValues) => {
     if (editingImage) {
-      // Update existing image
       setSliderImages(
         sliderImages.map((image) =>
-          image.id === editingImage.id
-            ? {
-                ...image,
-                ...values,
-              }
-            : image,
-        ),
+          image.id === editingImage.id ? { ...image, ...values } : image
+        )
       )
       toast({
         title: "Slider image updated",
         description: "The slider image has been successfully updated.",
       })
     } else {
-      // Create new image
       const newImage: SliderImage = {
         id: `S${String(sliderImages.length + 1).padStart(3, "0")}`,
         ...values,
@@ -248,8 +236,6 @@ export function HeroSliderManager() {
 
     if (!file) return
 
-    // In a real application, you would upload this file to a storage service
-    // For now, we'll just create a local URL
     if (file.size > 5 * 1024 * 1024) {
       setFileError("File size should not exceed 5MB")
       return
@@ -260,8 +246,6 @@ export function HeroSliderManager() {
       return
     }
 
-    // In a real app, we would upload the file to a server
-    // For this demo, we'll just use a placeholder
     form.setValue("imageUrl", `/placeholder.svg?height=400&width=1200&text=${encodeURIComponent(file.name)}`)
     toast({
       title: "Image selected",
@@ -322,7 +306,7 @@ export function HeroSliderManager() {
                   )}
                 >
                   <div className="relative w-full md:w-32 h-20 rounded-md overflow-hidden flex-shrink-0">
-                    <Image src={image.imageUrl || "/placeholder.svg"} alt={image.title} fill className="object-cover" />
+                    <Image src={image.imageUrl} alt={image.title} fill className="object-cover" />
                   </div>
                   <div className="flex-grow">
                     <div className="flex items-center gap-2">
@@ -426,7 +410,7 @@ export function HeroSliderManager() {
                       {field.value && (
                         <div className="relative w-full h-40 rounded-md overflow-hidden">
                           <Image
-                            src={field.value || "/placeholder.svg"}
+                            src={field.value}
                             alt="Slider preview"
                             fill
                             className="object-cover"
@@ -531,7 +515,7 @@ export function HeroSliderManager() {
             {activeImages.length > 0 ? (
               <>
                 <Image
-                  src={activeImages[activePreviewIndex].imageUrl || "/placeholder.svg"}
+                  src={activeImages[activePreviewIndex].imageUrl}
                   alt={activeImages[activePreviewIndex].title}
                   fill
                   className="object-cover"
@@ -595,4 +579,3 @@ export function HeroSliderManager() {
     </>
   )
 }
-
