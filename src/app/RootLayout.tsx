@@ -48,7 +48,7 @@ export default function RootLayout({
                       alt="logo"
                     />
                     <p>
-                      <span className="font-bold text-red-400">Prime</span><span className="font-bold text-blue-800">Gurkha</span>
+                      <span className="font-bold text-red-400">Gurkha</span><span className="font-bold text-blue-800"> Pasal</span>
                     </p>
                   </Link>
                 </div>
