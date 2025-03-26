@@ -40,9 +40,14 @@ export default function RootLayout({
             <div className="flex flex-1">
               <aside className="hidden w-64 border-r bg-background md:block">
                 <div className="flex h-16 items-center border-b px-6 bg-primary/10">
-                  <Link href="/dashboard" className="flex items-center gap-2 text-primary-foreground">
-                    <Store className="h-6 w-6 text-primary" />
-                    <span className="font-bold text-foreground">Admin Dashboard</span>
+                  <Link href="/admin" className="flex items-center gap-2 text-primary-foreground">
+                    <Image
+                      src={"/Image/Admin/logo.png"}
+                      width={50}
+                      height={50}
+                      alt="logo"
+                    />
+                    <span className="font-bold text-foreground">Prime Gurkha</span>
                   </Link>
                 </div>
                 <div className="px-3 py-4 h-[calc(100vh-4rem-40px)] overflow-auto">
@@ -69,8 +74,8 @@ export default function RootLayout({
             <div className="flex flex-1">
               <aside className="hidden w-64 border-r bg-background md:block">
                 <div className="flex h-16 items-center border-b px-6 bg-primary/10">
-                  <Link href="/dashboard" className="flex items-center gap-2 text-primary-foreground">
-                    <Image 
+                  <Link href="/vendor" className="flex items-center gap-2 text-primary-foreground">
+                    <Image
                       src={"/Image/Admin/logo.png"}
                       width={50}
                       height={50}
