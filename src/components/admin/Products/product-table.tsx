@@ -32,6 +32,7 @@ interface Product {
   category: string
   status: ProductStatus
   price: string
+  section: string
   stock: number
   image: string
 }
@@ -43,6 +44,7 @@ const products: Product[] = [
     category: "Electronics",
     status: "in-stock",
     price: "$129.99",
+    section: "Trending",
     stock: 35,
     image: "/placeholder.svg?height=40&width=40",
   },
@@ -52,6 +54,7 @@ const products: Product[] = [
     category: "Electronics",
     status: "low-stock",
     price: "$199.50",
+    section: "Flash Sale",
     stock: 12,
     image: "/placeholder.svg?height=40&width=40",
   },
@@ -61,6 +64,7 @@ const products: Product[] = [
     category: "Electronics",
     status: "out-of-stock",
     price: "$89.00",
+    section: "Trending",
     stock: 0,
     image: "/placeholder.svg?height=40&width=40",
   },
@@ -70,6 +74,7 @@ const products: Product[] = [
     category: "Accessories",
     status: "in-stock",
     price: "$29.99",
+    section: "Trending",
     stock: 23,
     image: "/placeholder.svg?height=40&width=40",
   },
@@ -78,6 +83,7 @@ const products: Product[] = [
     name: "Phone Case",
     category: "Accessories",
     status: "low-stock",
+    section: "On Demand",
     price: "$19.99",
     stock: 8,
     image: "/placeholder.svg?height=40&width=40",
@@ -87,6 +93,7 @@ const products: Product[] = [
     name: "Wireless Charger",
     category: "Electronics",
     status: "in-stock",
+    section: "Discounted Product",
     price: "$49.99",
     stock: 42,
     image: "/placeholder.svg?height=40&width=40",
@@ -96,6 +103,7 @@ const products: Product[] = [
     name: "Fitness Tracker",
     category: "Electronics",
     status: "in-stock",
+    section: "Trending",
     price: "$79.99",
     stock: 18,
     image: "/placeholder.svg?height=40&width=40",
@@ -105,6 +113,7 @@ const products: Product[] = [
     name: "Backpack",
     category: "Accessories",
     status: "in-stock",
+    section: "Trending",
     price: "$59.99",
     stock: 15,
     image: "/placeholder.svg?height=40&width=40",
@@ -114,6 +123,7 @@ const products: Product[] = [
     name: "Tablet Stand",
     category: "Accessories",
     status: "low-stock",
+    section: "Flash Sale",
     price: "$24.99",
     stock: 7,
     image: "/placeholder.svg?height=40&width=40",
@@ -123,6 +133,7 @@ const products: Product[] = [
     name: "Wireless Mouse",
     category: "Electronics",
     status: "out-of-stock",
+    section: "Trending",
     price: "$39.99",
     stock: 0,
     image: "/placeholder.svg?height=40&width=40",
@@ -258,6 +269,7 @@ export function ProductsTable() {
                   <TableHead className="hidden md:table-cell">Category</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Price</TableHead>
+                  <TableHead>Section</TableHead>
                   <TableHead className="hidden md:table-cell">Stock</TableHead>
                   <TableHead className="w-[50px]"></TableHead>
                 </TableRow>
@@ -282,6 +294,7 @@ export function ProductsTable() {
                       </Badge>
                     </TableCell>
                     <TableCell>{product.price}</TableCell>
+                    <TableCell>{product.section}</TableCell>
                     <TableCell className="hidden md:table-cell">{product.stock}</TableCell>
                     <TableCell>
                       <DropdownMenu>

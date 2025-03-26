@@ -50,9 +50,6 @@ const formSchema = z.object({
   dimensions: z.string().optional(),
 })
 
-//role
-const role = ["admin", "vendor"]
-
 export function AddProductDialog({ open, onOpenChange }: AddProductDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [categoryPopup, setCategoryPopup] = useState(false)
@@ -120,6 +117,9 @@ export function AddProductDialog({ open, onOpenChange }: AddProductDialogProps) 
       setSectionPopup(false)
     }
   }
+
+  //role
+  const [role, setRole] = useState("admin");
 
   return (
     <>
@@ -322,28 +322,31 @@ export function AddProductDialog({ open, onOpenChange }: AddProductDialogProps) 
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select product status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="stock">Stock</SelectItem>
-                          <SelectItem value="limited">Limited</SelectItem>
-                          <SelectItem value="out of stock">Out of Stock</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
+                {role == "admin" && (
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select product status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="stock">Stock</SelectItem>
+                            <SelectItem value="limited">Limited</SelectItem>
+                            <SelectItem value="out of stock">Out of Stock</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
 
               <FormField

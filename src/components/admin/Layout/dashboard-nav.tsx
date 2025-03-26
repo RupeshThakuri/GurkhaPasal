@@ -6,7 +6,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { BarChart3, Package, Settings, ShoppingCart, User, Users, Truck } from "lucide-react"
+import { BarChart3, Package, Settings, ShoppingCart, User, Users, Truck, LayoutDashboard, Bell } from "lucide-react"
 
 interface NavItem {
   title: string
@@ -39,6 +39,16 @@ const navItems: NavItem[] = [
     title: "Vendors",
     href: "/admin/vendors",
     icon: Truck,
+  },
+  {
+    title: "CMS",
+    href: "/admin/cms",
+    icon: LayoutDashboard, 
+  },
+  {
+    title: "Notification",
+    href: "/admin/notification",
+    icon: Bell, 
   },
   {
     title: "Profile",

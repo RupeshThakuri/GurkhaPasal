@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -17,22 +17,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Upload } from "lucide-react"
+import { Loader2, Upload, PlusCircle } from "lucide-react"
 import Image from "next/image"
-
-interface EditProductDialogProps {
-  product: {
-    id: string
-    name: string
-    category: string
-    status: "in-stock" | "low-stock" | "out-of-stock"
-    price: string
-    stock: number
-    image: string
-  }
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -41,11 +27,17 @@ const formSchema = z.object({
   category: z.string().min(1, {
     message: "Please select a category.",
   }),
+  section: z.string().min(1, {
+    message: "Please select a section.",
+  }),
   price: z.string().min(1, {
     message: "Please enter a price.",
   }),
   stock: z.coerce.number().min(0, {
     message: "Stock cannot be negative.",
+  }),
+  status: z.string().min(1, {
+    message: "Please select a status.",
   }),
   description: z.string().optional(),
   sku: z.string().min(1, {
@@ -55,28 +47,51 @@ const formSchema = z.object({
   dimensions: z.string().optional(),
 })
 
-export function EditProductDialog({ product, open, onOpenChange }: EditProductDialogProps) {
+export function EditProductDialog({ product, open, onOpenChange }: { product: any, open: boolean, onOpenChange: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories] = useState(["Electronics", "Accessories", "Clothing", "Home"])
+  const [sections] = useState(["Trending", "Flash Sale", "Discounted", "New Arrivals"])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: product.name,
-      category: product.category,
-      price: product.price.replace("$", ""),
-      stock: product.stock,
-      description: "High-quality product with premium features. Perfect for everyday use.",
-      sku: product.id.replace("PROD-", "SKU-"),
-      weight: "0.5 kg",
-      dimensions: "10 x 5 x 2 cm",
-    },
+      name: "",
+      category: "",
+      section: "",
+      price: "",
+      stock: 0,
+      status: "",
+      description: "",
+      sku: "",
+      weight: "",
+      dimensions: "",
+    }
   })
+
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        name: product.name,
+        category: product.category,
+        section: product.section,
+        price: product.price.replace("$", ""),
+        stock: product.stock,
+        status: product.status,
+        description: product.description || "",
+        sku: product.sku || product.id.replace("PROD-", "SKU-"),
+        weight: product.weight || "",
+        dimensions: product.dimensions || ""
+      })
+    }
+  }, [product, form])
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
-    // Simulate API call
+    console.log("Updating product:", {
+      ...values,
+      price: `$${values.price}`
+    })
     setTimeout(() => {
-      console.log("Updating product:", values)
       setIsSubmitting(false)
       onOpenChange(false)
     }, 1000)
@@ -92,7 +107,12 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
 
         <div className="flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 mb-4">
           <div className="relative h-24 w-24 overflow-hidden rounded-md border">
-            <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+            <Image
+              src={product.image || "/placeholder.svg"}
+              alt={product.name}
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="space-y-2">
             <div className="text-sm text-muted-foreground">JPG, PNG or GIF. Max size of 800K</div>
@@ -113,7 +133,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Product Name</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="Product name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,17 +145,16 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Electronics">Electronics</SelectItem>
-                        <SelectItem value="Accessories">Accessories</SelectItem>
-                        <SelectItem value="Clothing">Clothing</SelectItem>
-                        <SelectItem value="Home">Home</SelectItem>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -147,17 +166,42 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
+                name="section"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Section</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a section" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {sections.map((sec) => (
+                          <SelectItem key={sec} value={sec}>{sec}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Price ($)</FormLabel>
                     <FormControl>
-                      <Input type="text" {...field} />
+                      <Input type="number" placeholder="0.00" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="stock"
@@ -165,8 +209,30 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Stock</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" placeholder="0" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="in-stock">In Stock</SelectItem>
+                        <SelectItem value="low-stock">Low Stock</SelectItem>
+                        <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -180,7 +246,11 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Enter product description" className="resize-none" {...field} />
+                    <Textarea
+                      placeholder="Product description"
+                      className="resize-none"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -195,7 +265,7 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>SKU</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="SKU-12345" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -208,9 +278,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Weight</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="0.5 kg" {...field} />
                     </FormControl>
-                    <FormDescription>Optional</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -222,9 +291,8 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
                   <FormItem>
                     <FormLabel>Dimensions</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input placeholder="10 x 5 x 2 cm" {...field} />
                     </FormControl>
-                    <FormDescription>Optional</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -252,4 +320,3 @@ export function EditProductDialog({ product, open, onOpenChange }: EditProductDi
     </Dialog>
   )
 }
-
