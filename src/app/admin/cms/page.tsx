@@ -1,8 +1,8 @@
 import { DashboardHeader } from "@/components/admin/Dashboard/dashboard-header"
 import { DashboardShell } from "@/components/admin/Dashboard/dashboard-shell"
-import { HeroSliderManager } from "@/components/admin/CSM/hero-slider-manager"
-import { PromotionalBanners } from "@/components/admin/CSM/promotional-banners"
-import { PageContentManager } from "@/components/admin/CSM/page-content-manager"
+import { HeroSliderManager } from "@/components/admin/CMS/hero-slider-manager"
+import { PromotionalBanners } from "@/components/admin/CMS/promotional-banners"
+import { PageContentManager } from "@/components/admin/CMS/page-content-manager"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function CMSPage() {
