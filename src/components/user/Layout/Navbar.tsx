@@ -5,10 +5,12 @@ import { Search, ShoppingCart, User, Heart, Menu, ChevronDown } from 'lucide-rea
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { CategoryMenu } from './CategoryMenu';
+import { useWishlist } from '../context/wishlistContext';
 
 export function Navbar() {
-  const { wishlistCount, cartCount } = useCart();
+  const { cartCount } = useCart();
   const [showCategories, setShowCategories] = useState(false);
+  const { wishlistCount } = useWishlist();
 
   return (
     <>

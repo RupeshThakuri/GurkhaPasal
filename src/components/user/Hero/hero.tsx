@@ -7,39 +7,12 @@ import { ProductCard } from  '@/components/user/Layout/components/ProductCard';
 
 
 import BannerSection from './banner';
+import CategoryShow from './categoryshow';
 
 
 
-const FEATURED_PRODUCTS = [
-    {
-      id: 1,
-      name: "Traditional Dhaka Topi",
-      price: 1200,
-      image: '/Image/User/b1.jpeg',
-      description: "Authentic Nepali Dhaka Topi, handcrafted with traditional patterns."
-    },
-    {
-      id: 2,
-      name: "Handmade Pashmina Shawl",
-      price: 3500,
-      image: '/Image/User/b2.jpeg',
-      description: "Premium quality pashmina shawl made from 100% cashmere wool."
-    },
-    {
-      id: 3,
-      name: "Himalayan Rock Salt",
-      price: 450,
-      image: '/Image/User/b3.jpeg',
-      description: "Pure Himalayan pink salt, rich in minerals and natural flavor."
-    },
-    {
-      id: 4,
-      name: "Organic Nepal Tea",
-      price: 850,
-      image: '/Image/User/b4.jpeg',
-      description: "Premium organic black tea from the hills of Nepal."
-    }
-  ];
+
+  
   const images = [
     '/Image/User/b1.jpeg',
     '/Image/User/b2.jpeg',
@@ -86,17 +59,17 @@ function Hero() {
       </div>
 
       {/* Featured Products */}
-      <div className="max-w-7xl mx-auto py-8 md:py-12 px-4">
+      {/* <div className="max-w-7xl mx-auto py-8 md:py-12 px-4">
         <h2 className="text-xl md:text-2xl font-bold mb-6">Featured Products</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FEATURED_PRODUCTS.map((product) => (
             <ProductCard key={product.id} {...product} />
           ))}
         </div>
-      </div>
-
+      </div> */}
+     < CategoryShow />
       {/* Featured Categories */}
-      <div className="max-w-7xl mx-auto py-8 md:py-12 px-4">
+      {/* <div className="max-w-7xl mx-auto py-8 md:py-12 px-4">
         <h2 className="text-xl md:text-2xl font-bold mb-6 md:mb-8">Featured Categories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {[
@@ -129,7 +102,59 @@ function Hero() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   )
 }
