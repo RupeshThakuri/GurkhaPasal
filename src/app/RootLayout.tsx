@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { WishlistProvider } from "@/components/user/context/wishlistContext";
 import { CartProvider } from "@/components/user/context/CartContext";
 import { usePathname } from "next/navigation";
 import { DashboardNav } from "@/components/admin/Layout/dashboard-nav";
@@ -104,7 +105,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <CartProvider>{children}</CartProvider>
+        <WishlistProvider>
+          <CartProvider>{children}</CartProvider>
+        </WishlistProvider>
       </body>
     </html>
   );

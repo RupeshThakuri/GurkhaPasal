@@ -2,24 +2,30 @@ import { Heart, ShoppingCart } from 'lucide-react';
 import { useCart } from "@/components/user/context/CartContext";
 import Image from "next/image";
 import { Button } from '@/components/ui/button';
+import { useWishlist } from '../../context/wishlistContext';
 
 interface ProductCardProps {
   id: number;
   name: string;
   price: number;
   image: string;
+  discount: string;
   description: string;
 }
 
-export function ProductCard({ id, name, price, image, description }: ProductCardProps) {
-  const { addToCart  , addToWishlist} = useCart();
+export function ProductCard({ id, name, price, image, description , discount }: ProductCardProps) {
+  const { addToCart, } = useCart();
+  const { addToWishlist } = useWishlist();
 
   const handleAddToCart = () => {
-    addToCart({ id, name, price, image });
+    addToCart({
+      id, name, price, image,
+      discount,
+    });
   };
 
   const handleAddToWishlist = () => {
-    addToWishlist({ id, name, price, image });
+    addToWishlist({ id, name, price, image , discount });
   };
 
   return (
@@ -32,8 +38,11 @@ export function ProductCard({ id, name, price, image, description }: ProductCard
           width={800}
           height={400}
         />
+        <div className="absolute top-4 left-4  hover:bg-orange-300 text-black p-2 rounded-lg" >
+          {discount}
+        </div>
         <Button
-          className="absolute top-4 right-4 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg"
+          className="absolute top-4 right-4 bg-transparent hover:bg-orange-300 text-black px-4 py-2 rounded-lg"
           onClick={handleAddToWishlist}
         >
           <Heart size={20} />
@@ -41,16 +50,17 @@ export function ProductCard({ id, name, price, image, description }: ProductCard
       </div>
 
       <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{name}</h3>
+ 
+        <h3 className="mt-2 text-center font-semibold min-h-[48px] line-clamp-2 overflow-hidden">{name}</h3>
         <p className="text-gray-600 text-sm mb-2 line-clamp-2">{description}</p>
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-[#ff7f2a]">Rs. {price}</span>
+          <span className=" bg-whit hover:bg-orange-300 px-1 py-1 rounded-md      text-sm font-bold text-[#ff7f2a]">Rs. {price}</span>
           <button
             onClick={handleAddToCart}
-            className="flex items-center gap-2 bg-[#ff7f2a] text-white px-3 py-2 rounded-md hover:bg-[#ff9f5a] transition-colors"
+            className="flex items-center gap-2 bg-white text-black px-3 py-2 rounded-md hover:bg-orange-300 transition-colors"
           >
-            <ShoppingCart size={18} />
-            Add to Cart
+            <ShoppingCart size={20} />
+          
           </button>
         </div>
       </div>
